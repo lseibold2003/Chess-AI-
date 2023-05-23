@@ -11,17 +11,17 @@ namespace Chess {
 
         public struct BoardState {
             int[] board;
-            bool WQCastle;
-            bool WKCastle;
-            bool BQCastle;
-            bool BKCastle;
-            bool blackCastle;
-            int moves;
+            bool WQCastle = false;
+            bool WKCastle = false;
+            bool BQCastle = false;
+            bool BKCastle = false;
             bool whiteTurn;
+            int PassantFile = -1;
+            int moves;
         };
 
         public static BoardState readFen(string fen) {
-            int[64] b;
+            int[] b = new int[64];
             int pos = 0;
             string[] split = fen.Split(' ');
             for (char c : split[0]) {
@@ -36,7 +36,24 @@ namespace Chess {
                     b[pos] = piece | color;
                 }
             }
-
+            BoardState ans;
+            ans.board = b;
+            ans.whiteTurn = (split[1] == 'w');
+            for (char c : split[2]) {
+                if (c == 'K') {
+                    ans.WKCastle = true;
+                } else if (c == 'Q') {
+                    ans.WQCastle = true;
+                } else if (c == 'k') {
+                    ans.BKCastle = true;
+                } else if (c == 'q') {
+                    ans.BQCastle = true;
+                }
+            }
+            if (split[3] != '-') {
+                ans.PassantFile = (int) char.GetNumericValue(split[3][1]);
+            }
+            ans.moves = (int) char.GetNumericValue(split[4]);
         }
 
     }
