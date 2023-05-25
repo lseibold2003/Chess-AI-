@@ -16,7 +16,7 @@ namespace Chess {
             bool BQCastle = false;
             bool BKCastle = false;
             bool whiteTurn;
-            int PassantFile = -1;
+            int PassantFile = -10;
             int moves;
         };
 
